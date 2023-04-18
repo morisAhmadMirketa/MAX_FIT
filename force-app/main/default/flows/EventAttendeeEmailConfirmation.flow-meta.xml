@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Attendee_Confirmation_Mail</name>
+        <label>Attendee Confirmation Mail</label>
+        <locationX>176</locationX>
+        <locationY>335</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>AttendeeConfirmationMailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.Attendee__r.Email__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>AttendeeConfirmationEmailSubject</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <description>Sends Confirmation Email to Event Attendee</description>
+    <environments>Default</environments>
+    <interviewLabel>Event {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>EventAttendeeEmailConfirmation</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Attendee_Confirmation_Mail</targetReference>
+        </connector>
+        <object>Event_Attendee__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>AttendeeConfirmationEmailSubject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Pass for the {!$Record.Event__r.Name__c}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>AttendeeConfirmationMailBody</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Dear {!$Record.Attendee__r.Name},
+Thank you for registering for {!$Record.Event__r.Name__c} which will be Organized on {!$Record.Event__r.Start_Date_Time__c} &amp; will be held in {!$Record.Event__r.Location__r.Name}. We are excited to have you, see you at the event.
+Thanks,
+{!$Record.Event__r.Organizer__r.Name}</text>
+    </textTemplates>
+</Flow>
